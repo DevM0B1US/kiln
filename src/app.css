@@ -1,0 +1,344 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/Inter-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/Inter-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/fonts/JetBrainsMono-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root,
+[data-theme="dark"] {
+  --bg: #141414;
+  --surface: #1c1c1c;
+  --raised: #242424;
+  --border: #2e2e2e;
+  --border-strong: #3d3d3d;
+  --text: #e8e8e8;
+  --secondary: #9a9a9a;
+  --disabled: #5c5c5c;
+  --danger: #c0574f;
+  --checker-a: #1e1e1e;
+  --checker-b: #2a2a2a;
+  --hover-ink: #ffffff;
+}
+
+[data-theme="light"] {
+  --bg: #f4f4f4;
+  --surface: #ffffff;
+  --raised: #ebebeb;
+  --border: #dcdcdc;
+  --border-strong: #c2c2c2;
+  --text: #1a1a1a;
+  --secondary: #6b6b6b;
+  --disabled: #a8a8a8;
+  --danger: #b03a30;
+  --checker-a: #c4c4c4;
+  --checker-b: #d8d8d8;
+  --hover-ink: #000000;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: 12px;
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+  cursor: default;
+}
+
+input,
+textarea {
+  user-select: text;
+}
+
+.title-text {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.group-label {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.caption {
+  font-size: 11px;
+  color: var(--secondary);
+}
+
+.num {
+  font-family: "JetBrains Mono", monospace;
+}
+
+.secondary-text {
+  color: var(--secondary);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-family: inherit;
+  cursor: pointer;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.btn:disabled {
+  cursor: default;
+}
+
+.btn-action {
+  background: var(--text);
+  color: var(--bg);
+}
+
+.btn-action:hover:not(:disabled) {
+  background: var(--hover-ink);
+}
+
+.btn-action:disabled {
+  opacity: 0.3;
+}
+
+.btn-secondary {
+  background: var(--surface);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: var(--raised);
+  border-color: var(--border-strong);
+}
+
+.btn-secondary:disabled {
+  color: var(--disabled);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--secondary);
+}
+
+.btn-ghost:hover:not(:disabled) {
+  background: var(--raised);
+  color: var(--text);
+}
+
+.btn-ghost:disabled {
+  color: var(--disabled);
+}
+
+.btn-danger-text {
+  background: transparent;
+  color: var(--danger);
+}
+
+.btn-danger-text:disabled {
+  opacity: 0.4;
+}
+
+.btn-frame-close:hover:not(:disabled) {
+  background: var(--danger);
+  color: #ffffff;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.raised-card {
+  background: var(--raised);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.rule-h {
+  height: 1px;
+  background: var(--border);
+  flex: none;
+}
+
+.rule-v {
+  width: 1px;
+  background: var(--border);
+  flex: none;
+  align-self: stretch;
+}
+
+.checker {
+  background-color: var(--checker-a);
+  background-image: repeating-conic-gradient(
+    var(--checker-b) 0% 25%,
+    var(--checker-a) 0% 50%
+  );
+  background-size: 32px 32px;
+}
+
+.stage-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.stage-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.thin-track {
+  height: 3px;
+  background: var(--border);
+  width: 100%;
+}
+
+.ember-sweep {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 40%;
+  background: linear-gradient(
+    100deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.22) 50%,
+    transparent 80%
+  );
+  animation: ember-sweep 1.2s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes ember-sweep {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(350%);
+  }
+}
+
+.thin-fill {
+  height: 3px;
+  background: var(--text);
+}
+
+input[type="range"].ember-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1;
+  height: 16px;
+  background: transparent;
+  cursor: pointer;
+  min-width: 0;
+}
+
+input[type="range"].ember-slider::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(
+    to right,
+    var(--text) 0%,
+    var(--text) var(--fill, 50%),
+    var(--border) var(--fill, 50%),
+    var(--border) 100%
+  );
+}
+
+input[type="range"].ember-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 10px;
+  height: 16px;
+  margin-top: -6px;
+  border-radius: 2px;
+  background: var(--text);
+  border: none;
+}
+
+input[type="range"].ember-slider::-moz-range-track {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border);
+}
+
+input[type="range"].ember-slider::-moz-range-progress {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--text);
+}
+
+input[type="range"].ember-slider::-moz-range-thumb {
+  width: 10px;
+  height: 16px;
+  border-radius: 2px;
+  background: var(--text);
+  border: none;
+}
+
+input[type="text"].ember-input {
+  width: 56px;
+  flex: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text);
+  font-size: 12px;
+  font-family: "JetBrains Mono", monospace;
+  padding: 4px 6px;
+  outline: none;
+}
+
+input[type="text"].ember-input:focus {
+  border-color: var(--border-strong);
+}
+
+.ember-checkbox {
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  flex: none;
+  border: 1px solid var(--border-strong);
+  border-radius: 2px;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  margin: 0;
+}
+
+.ember-checkbox:checked {
+  background: var(--text);
+  border-color: var(--text);
+}
+
+.banner {
+  background: var(--surface);
+  border: 1px solid var(--danger);
+  color: var(--danger);
+  padding: 12px;
+}
