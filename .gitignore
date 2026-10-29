@@ -1,0 +1,6 @@
+target
+models
+.env
+.env.*
+!.env.example
+.DS_Store
