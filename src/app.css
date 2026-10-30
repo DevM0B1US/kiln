@@ -1,0 +1,223 @@
+/* Kiln visual contract from UI.md. Dark is default. Danger red is the only
+   accent. No transitions; state changes cut. Fonts ship locally (OFL). */
+
+@font-face {
+  font-family: "Inter";
+  src: url("./fonts/Inter-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("./fonts/Inter-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("./fonts/JetBrainsMono-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+
+:root,
+:root.theme-dark {
+  --bg: #141414;
+  --surface: #1c1c1c;
+  --surface-raised: #242424;
+  --border: #2e2e2e;
+  --border-strong: #3d3d3d;
+  --text: #e8e8e8;
+  --text-secondary: #9a9a9a;
+  --text-disabled: #5c5c5c;
+  --danger: #c0574f;
+  --checker-a: #1e1e1e;
+  --checker-b: #2a2a2a;
+}
+
+:root.theme-light {
+  --bg: #f4f4f4;
+  --surface: #ffffff;
+  --surface-raised: #ebebeb;
+  --border: #dcdcdc;
+  --border-strong: #c2c2c2;
+  --text: #1a1a1a;
+  --text-secondary: #6b6b6b;
+  --text-disabled: #a8a8a8;
+  --danger: #b03a30;
+  --checker-a: #c4c4c4;
+  --checker-b: #d8d8d8;
+}
+
+:root {
+  --font-ui: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --title-bar-h: 40px;
+  --sidebar-w: 208px;
+  --sidebar-rail-w: 64px;
+  --panel-w: 264px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  line-height: 1.45;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: default;
+}
+
+/* ---- shared bits ------------------------------------------------------- */
+
+button {
+  font: inherit;
+  color: var(--text);
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+  background: var(--border);
+  border-color: var(--border-strong);
+}
+
+button:active:not(:disabled) {
+  background: var(--border-strong);
+}
+
+button:disabled {
+  color: var(--text-disabled);
+  cursor: default;
+}
+
+.small {
+  padding: 2px 8px;
+  font-size: 11px;
+}
+
+.caption {
+  color: var(--text-secondary);
+  font-size: 11px;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.section {
+  margin-top: 12px;
+}
+
+.section > .title {
+  margin-bottom: 4px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.grow {
+  flex: 1;
+}
+
+input[type="range"] {
+  appearance: none;
+  -webkit-appearance: none;
+  height: 20px;
+  background: transparent;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 2px;
+  background: var(--border-strong);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 10px;
+  height: 14px;
+  margin-top: -6px;
+  background: var(--text);
+  border: 1px solid var(--border-strong);
+  border-radius: 2px;
+}
+
+input[type="range"]:disabled::-webkit-slider-thumb {
+  background: var(--text-disabled);
+}
+
+input[type="number"],
+input[type="text"] {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 0;
+  padding: 2px 6px;
+  width: 64px;
+}
+
+input[type="number"]:disabled,
+input[type="text"]:disabled {
+  color: var(--text-disabled);
+}
+
+input[type="checkbox"] {
+  accent-color: var(--border-strong);
+}
+
+.checker {
+  background: repeating-conic-gradient(var(--checker-a) 0% 25%, var(--checker-b) 0% 50%) 0 0 / 16px
+    16px;
+}
+
+.truncate {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+svg.icon {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  display: block;
+}

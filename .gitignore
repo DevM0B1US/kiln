@@ -1,6 +1,7 @@
-target
-models
-.env
-.env.*
-!.env.example
+node_modules/
+dist/
+target/
+models/
+src-tauri/gen/
+*.log
 .DS_Store

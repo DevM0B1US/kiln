@@ -7,18 +7,18 @@ visual language, no rounded excess, no accent colour.
 
 Dark is default. Bright surrounds hide shadow detail in a matte.
 
-| Role | Dark | Light |
-|---|---|---|
-| Background | `#141414` | `#f4f4f4` |
-| Surface (panels) | `#1c1c1c` | `#ffffff` |
-| Surface raised | `#242424` | `#ebebeb` |
-| Border | `#2e2e2e` | `#dcdcdc` |
-| Border strong | `#3d3d3d` | `#c2c2c2` |
-| Text primary | `#e8e8e8` | `#1a1a1a` |
-| Text secondary | `#9a9a9a` | `#6b6b6b` |
-| Text disabled | `#5c5c5c` | `#a8a8a8` |
-| Danger | `#c0574f` | `#b03a30` |
-| Checker | `#1e1e1e` / `#2a2a2a` | `#c4c4c4` / `#d8d8d8` |
+| Role             | Dark                  | Light                 |
+| ---------------- | --------------------- | --------------------- |
+| Background       | `#141414`             | `#f4f4f4`             |
+| Surface (panels) | `#1c1c1c`             | `#ffffff`             |
+| Surface raised   | `#242424`             | `#ebebeb`             |
+| Border           | `#2e2e2e`             | `#dcdcdc`             |
+| Border strong    | `#3d3d3d`             | `#c2c2c2`             |
+| Text primary     | `#e8e8e8`             | `#1a1a1a`             |
+| Text secondary   | `#9a9a9a`             | `#6b6b6b`             |
+| Text disabled    | `#5c5c5c`             | `#a8a8a8`             |
+| Danger           | `#c0574f`             | `#b03a30`             |
+| Checker          | `#1e1e1e` / `#2a2a2a` | `#c4c4c4` / `#d8d8d8` |
 
 Danger red is the only accent. Everything else is grey. Tokens live in `src/app/theme.rs` as the `Tokens` struct. No stray hex
 elsewhere.
@@ -55,13 +55,13 @@ strip, no divider lines inside the panel. No transitions; state changes cut.
 
 ## States
 
-| State | What shows |
-|---|---|
-| No model | Calm banner under the title bar. Export disabled. |
-| No images | Empty stage. Icon tile, `Drop images here`, Browse + Paste. |
-| Ready | Preview, live controls, action reads the live count. |
-| Working | `n/total` pill with thin progress bar, bottom-right of stage. |
-| Failed | Per-item error in the status line. Batch continues. |
+| State     | What shows                                                    |
+| --------- | ------------------------------------------------------------- |
+| No model  | Calm banner under the title bar. Export disabled.             |
+| No images | Empty stage. Icon tile, `Drop images here`, Browse + Paste.   |
+| Ready     | Preview, live controls, action reads the live count.          |
+| Working   | `n/total` pill with thin progress bar, bottom-right of stage. |
+| Failed    | Per-item error in the status line. Batch continues.           |
 
 ## Interaction
 

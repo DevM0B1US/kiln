@@ -1,0 +1,53 @@
+[package]
+name = "kiln"
+description = "Fast desktop background remover plus template merger. Drop images in, get transparent PNGs out."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+default-run = "kiln"
+
+[lib]
+name = "kiln_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[[bin]]
+name = "kiln"
+path = "src/main.rs"
+
+[build-dependencies]
+tauri-build = { version = "2.7.4", features = [] }
+
+[dependencies]
+kiln-core = { path = "../crates/kiln-core", features = ["serde"] }
+tauri = { version = "2.12.5", features = [] }
+tauri-plugin-dialog = "2.8.4"
+arboard = "3"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+base64 = "0.22"
+tracing = "0.1"
+image = { version = "0.25", default-features = false, features = [
+    "bmp",
+    "gif",
+    "jpeg",
+    "png",
+    "tga",
+    "tiff",
+    "webp",
+] }
+
+[lints.rust]
+unsafe_code = "deny"
+missing_docs = "warn"
+
+# The command layer is I/O glue around `kiln-core`: Tauri's extractors force
+# by-value `State` arguments and the macro rewrites the functions, so the
+# pedantic set mostly fires on framework shapes here. Correctness lints stay
+# hard; the deep pedantic review happens in the core crate.
+[lints.clippy]
+all = { level = "warn", priority = -1 }
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"

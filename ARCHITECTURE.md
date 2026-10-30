@@ -44,14 +44,14 @@ at a 1280px edge. The full-res matte stays in `Caches.mattes`, keyed by path
 with an mtime guard. Refine is maths on the cached matte. No second
 inference.
 
-| Step | Worker | Cost |
-|---|---|---|
-| Pick / drop / paste | `request_preview` | decode + downscale, fast |
-| Segment (once) | `request_matte` | ~2.8s inference, caches matte |
-| Slider (120ms debounce) | `request_refine` | matte maths at preview scale |
-| Export batch | `export_remove_batch` | inference or cache + full-res refine + write |
-| Merge view | `request_merge` | decode + composite at template size |
-| Merge batch | `export_merge_batch` | composite + write |
+| Step                    | Worker                | Cost                                         |
+| ----------------------- | --------------------- | -------------------------------------------- |
+| Pick / drop / paste     | `request_preview`     | decode + downscale, fast                     |
+| Segment (once)          | `request_matte`       | ~2.8s inference, caches matte                |
+| Slider (120ms debounce) | `request_refine`      | matte maths at preview scale                 |
+| Export batch            | `export_remove_batch` | inference or cache + full-res refine + write |
+| Merge view              | `request_merge`       | decode + composite at template size          |
+| Merge batch             | `export_merge_batch`  | composite + write                            |
 
 Batch loops live in `tasks.rs` on one worker thread, sending
 `BatchItem`/`BatchDone` events in order. One bad file records its error and

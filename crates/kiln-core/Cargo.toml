@@ -1,0 +1,49 @@
+[package]
+name = "kiln-core"
+description = "Core pipeline for Kiln: image IO, matte and merge maths, ONNX inference, model cache, safe paths."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[features]
+default = []
+# Serde shapes for the Tauri command layer. The core itself stays
+# framework-free; this only tags the option structs.
+serde = ["dep:serde"]
+
+[dependencies]
+image = { version = "0.25", default-features = false, features = [
+    "bmp",
+    "gif",
+    "jpeg",
+    "png",
+    "tga",
+    "tiff",
+    "webp",
+] }
+thiserror = "2"
+tracing = "0.1"
+ndarray = "0.17"
+sha2 = "0.10"
+serde = { version = "1", features = ["derive"], optional = true }
+ort = { version = "=2.0.0-rc.13", default-features = false, features = [
+    "std",
+    "ndarray",
+    "download-binaries",
+    "tls-native",
+    "copy-dylibs",
+    "api-27",
+] }
+
+[lints.rust]
+unsafe_code = "deny"
+missing_docs = "warn"
+
+[lints.clippy]
+all = { level = "warn", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"
