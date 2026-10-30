@@ -15,8 +15,8 @@ This app opens hostile files and runs a bundled model. Nothing phones home.
 
 - SHA-256 is verified against the pinned hash before every load. A swapped
   file is an error, never garbage mattes.
-- Weights live in `models/`, never in git, never in a release artifact. Dev reads
-  them from `models/` or `KILN_MODELS_DIR`.
+- Weights live in `models/`, never in git, never in a release artifact. Dev
+  reads them from `models/` or `KILN_MODELS_DIR`.
 
 ## Writes
 
@@ -26,15 +26,29 @@ This app opens hostile files and runs a bundled model. Nothing phones home.
 - Symlink and existing destinations are refused before anything is written.
 - Parent dirs are created only inside the picked output folder.
 
+## Tauri surface
+
+- Capabilities are least-privilege (`src-tauri/capabilities/default.json`):
+  window controls for the custom title bar, `dialog:open` for pickers, and
+  nothing else — no shell, no fs plugin, no http, no updater.
+- The CSP forbids remote code: `default-src 'self'`, images limited to
+  `self data: blob:` (previews), styles self + inline (Svelte), fonts self.
+- Only the eleven commands registered in `lib.rs` exist. Each one validates
+  paths through the core's size caps and confined writes.
+- Batch progress rides one event channel (`kiln://batch`); nothing inbound
+  executes as code.
+
 ## Deps and shell
 
-- Pinned versions, released crates only, no git deps. The single network
-  touch in the build is ORT's prebuilt binary fetch. The app itself makes
-  zero network requests — no telemetry, no update checks, nothing.
-- No shell commands anywhere. Dialogs go through `rfd`; the clipboard
-  through `arboard`.
-- All window state lives in one process; workers talk to the UI through a
-  bounded message channel, and late results are dropped by sequence.
+- Pinned versions, released crates and npm packages only, no git deps. The
+  single network touch in the build is ORT's prebuilt binary fetch. The app
+  itself makes zero network requests — no telemetry, no update checks,
+  nothing.
+- No shell commands anywhere. Dialogs go through the dialog plugin; the
+  clipboard through `arboard` (image bytes only, both directions).
+- All window state lives in one process; commands run on blocking workers
+  and report through events, and late responses are dropped by sequence
+  counters in the store.
 
 ## Licence
 

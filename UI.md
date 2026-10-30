@@ -20,14 +20,18 @@ Dark is default. Bright surrounds hide shadow detail in a matte.
 | Danger           | `#c0574f`             | `#b03a30`             |
 | Checker          | `#1e1e1e` / `#2a2a2a` | `#c4c4c4` / `#d8d8d8` |
 
-Danger red is the only accent. Everything else is grey. Tokens live in `src/app/theme.rs` as the `Tokens` struct. No stray hex
-elsewhere.
+Danger red is the only accent. Everything else is grey. Tokens live in
+`src/app.css` as CSS custom properties on the document root. No stray hex
+elsewhere — the one exception is the stage backdrops, which are palette
+independent by contract (a dark backdrop must stay dark in light mode to
+expose light halos).
 
 ## Type
 
-Inter for text, JetBrains Mono for every number, Lucide for every glyph.
-Fonts ship in `assets/fonts` and load at boot. Panel title 13px semibold,
-label 12px, numbers mono, captions 11px secondary, glyphs 12–14px.
+Inter for text, JetBrains Mono for every number, Lucide for every glyph
+(inline SVGs in `src/lib/icons.ts`). Fonts ship in `src/fonts` and load at
+boot via `@font-face`. Panel title 13px semibold, label 12px, numbers mono,
+captions 11px secondary, glyphs 12–14px.
 
 ## Spacing and shape
 
@@ -65,10 +69,14 @@ strip, no divider lines inside the panel. No transitions; state changes cut.
 
 ## Interaction
 
-OS file and folder pickers (`rfd`), plus window drag-drop (non-image drops
-are skipped). Native right-click is disabled everywhere; right-click on the
-image opens a custom Copy / Paste / Clear menu (Clear drops the current
-image from the queue). Sliders debounce 120ms. The first slider touch runs
-the one inference; every move after that re-refines the cached matte. Stage: locked centered viewer, no pan. Wheel, slider, buttons and double-click zoom about the center with smoothing. The Original toggle pins the source photo for compare. Three backdrops sit in the zoom bar: checkerboard, dark, and white.
-Dark exposes light halos, white exposes dark fringes — the checkerboard
-alone forgives both, so check edges on solid colours before exporting.
+OS file and folder pickers (dialog plugin), plus window drag-drop
+(non-image drops are skipped). Native right-click is disabled everywhere;
+right-click on the image opens a custom Copy / Paste / Clear menu (Clear
+drops the current image from the queue). Sliders debounce 120ms. The first
+slider touch runs the one inference; every move after that re-refines the
+cached matte. Stage: locked centered viewer, no pan. Wheel, slider, buttons
+and double-click zoom about the center with smoothing. The Original toggle
+pins the source photo for compare. Three backdrops sit in the zoom bar:
+checkerboard, dark, and white. Dark exposes light halos, white exposes dark
+fringes — the checkerboard alone forgives both, so check edges on solid
+colours before exporting.

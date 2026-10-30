@@ -5,11 +5,38 @@ on:
     branches: [master, main]
   pull_request:
 
-env:
-  CARGO_TERM_COLOR: always
-
 jobs:
-  test:
+  frontend:
+    name: Frontend (lint, check, test, build)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Format
+        run: npm run format:check
+
+      - name: Type check
+        run: npm run check
+
+      - name: Tests
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+  core:
+    name: Rust core (fmt, clippy, tests)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,22 +48,85 @@ jobs:
 
       - name: Cache cargo
         uses: Swatinem/rust-cache@v2
-
-      - name: Install Linux deps (egui/winit runtime libs)
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libxkbcommon-dev libwayland-dev libx11-dev \
-            libxcb1-dev libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev \
-            libatk1.0-dev libgtk-3-dev
+        with:
+          workspaces: |
+            . -> target
 
       - name: Format
         run: cargo fmt --all --check
 
+      # Scoped to the framework-free core: no webkit needed here. The full
+      # workspace compiles on all three platforms in the desktop job.
       - name: Clippy
-        run: cargo clippy --all-targets -- -D warnings
+        run: cargo clippy -p kiln-core --all-targets -- -D warnings
 
       - name: Tests (core + fixture inference)
-        run: cargo test
+        run: cargo test -p kiln-core
 
-      - name: Build
-        run: cargo build --locked
+  desktop:
+    name: Desktop build (${{ matrix.platform }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: ubuntu-24.04
+            args: --no-bundle
+          - platform: windows-latest
+            args: --no-bundle
+          - platform: macos-latest
+            args: --no-bundle
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install Linux deps (webkit/gtk runtime libs)
+        if: matrix.platform == 'ubuntu-24.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libgtk-3-dev \
+            libayatana-appindicator3-dev librsvg2-dev patchelf
+
+      - name: Cache cargo
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: |
+            . -> target
+
+      - name: Install frontend deps
+        run: npm ci
+
+      - name: Build desktop binary
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: ${{ matrix.args }}
+
+      - name: Upload artifact (Linux)
+        if: matrix.platform == 'ubuntu-24.04'
+        uses: actions/upload-artifact@v4
+        with:
+          name: kiln-linux
+          path: target/release/kiln
+
+      - name: Upload artifact (Windows)
+        if: matrix.platform == 'windows-latest'
+        uses: actions/upload-artifact@v4
+        with:
+          name: kiln-windows
+          path: target/release/kiln.exe
+
+      - name: Upload artifact (macOS)
+        if: matrix.platform == 'macos-latest'
+        uses: actions/upload-artifact@v4
+        with:
+          name: kiln-macos
+          path: target/release/kiln
